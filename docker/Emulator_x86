@@ -2,6 +2,9 @@ FROM appium/appium:v1.22.0-p0
 
 LABEL maintainer "Budi Utomo <budtmo.os@gmail.com>"
 
+# Corporate proxy shit
+ARG ANDROID_SDK_MANAGER_OPTS=${ANDROID_SDK_MANAGER_PROXY_OPTS}
+
 #=============
 # Set WORKDIR
 #=============
@@ -116,8 +119,8 @@ ENV ANDROID_VERSION=$ANDROID_VERSION \
     APP_TYPE=Emulator
 ENV PATH ${PATH}:${ANDROID_HOME}/build-tools
 
-RUN yes | sdkmanager --licenses && \
-    sdkmanager "platforms;android-${API_LEVEL}" "system-images;android-${API_LEVEL};${IMG_TYPE};${SYS_IMG}" "emulator"
+RUN yes | sdkmanager ${ANDROID_SDK_MANAGER_OPTS} --licenses && \
+    sdkmanager ${ANDROID_SDK_MANAGER_OPTS} "platforms;android-${API_LEVEL}" "system-images;android-${API_LEVEL};${IMG_TYPE};${SYS_IMG}" "emulator"
 
 #==============================================
 # Download proper version of chromedriver
